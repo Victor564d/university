@@ -1,0 +1,16 @@
+// C++ code
+//
+void setup()
+{
+  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(3, OUTPUT);
+   pinMode(A0, INPUT);
+}
+
+void loop()
+{
+ int temp =   analogRead(A0);
+ temp = map(temp,0,1023,0,255);
+  analogWrite(3,255-temp);
+  delay(10);
+}

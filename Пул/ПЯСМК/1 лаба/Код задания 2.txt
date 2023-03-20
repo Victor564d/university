@@ -1,0 +1,24 @@
+// C++ code
+//
+// для подключения потенциометра
+int val = 0;
+int n =2;
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(13, OUTPUT);
+}
+
+void loop()
+{
+  
+  val = analogRead(A0);
+  int output = map(val, 0, 1023, 1, 10);
+  double t = (1.0/(2*(10/((n/output)+1))))*1000;
+  Serial.print("value = " );
+  Serial.println(output);
+  digitalWrite(13, HIGH);
+  delay(t); 
+  digitalWrite(13, LOW);
+  delay(t); 
+}

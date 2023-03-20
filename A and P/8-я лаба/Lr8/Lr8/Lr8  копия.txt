@@ -1,0 +1,101 @@
+﻿#pragma warning(disable : 4996) ;
+#include <stdio.h>
+#include <string.h>
+#include <conio.h>
+#include <windows.h>
+#include <stdlib.h>
+
+char** strings;
+FILE* F;
+char** ReadFiles(char** Strings);
+void displayText(int n);
+int CountEquels(char** Strings, int n);
+int Count=0;
+FILE* FileIN;
+FILE* FileOUT;
+void DeletePointe();
+
+ main()
+{
+	 SetConsoleCP(1251); // Задаем таблицу символов для консоли.
+	 SetConsoleOutputCP(1251);
+	 if ((F = fopen("Tets.txt", "r")) == NULL)
+	 {
+		 fprintf(stderr, " Не возможно открыть входной файл \n");
+		 return 1;
+	 }
+	 strings = ReadFiles(strings);
+	 if (Count>0)displayText(Count);
+	 printf("\nКоличество одинаковых строк --> %d", CountEquels(strings, Count));
+	 FileIN = fopen("3.txt", "r");
+	 FileOUT = fopen("2.txt", "w");
+	 DeletePointe();
+}
+
+ char** ReadFiles(char** Strings)
+{
+	 char temp[256] = { ' ' };
+	 int n = 0;
+	 while (fgets(temp, 256, F) !=NULL)
+	 {
+		 n++;
+	 }
+	 printf("Количество строк - %d\n", n);
+	 Strings = (char**) malloc(n*sizeof(char*));
+	 for (int i = 0; i < n; i++) {
+		 Strings[i] = (char*)malloc(255 * sizeof(char));
+	 }
+	 fclose(F);
+	 F = fopen("Tets.txt", "r"); n = 0;
+	 while (fgets(Strings[n], 256, F) != NULL)
+	 {
+		 n++;
+	 }
+	 Count = n;
+	return Strings;
+}
+		
+ void displayText(int n)
+ {
+	 for (int i = 0; i < n; i++) 
+	 {
+		 printf("Строка №%d -->%s", i, strings[i]);
+	 }
+ }
+	
+ int CountEquels(char** Strings, int n) 
+ {
+	 int count = 0;
+	 for (int i = 0; i < n; i++) {
+		 for (int j = i + 1; j < n - 1; j++) 
+		 {
+			 if (!strcmp(Strings[i], Strings[j])) 
+			 {
+				 count++;
+			 }
+		 }
+	 }
+	 return count;
+ }
+
+ void DeletePointe()
+ {
+	 char pointer = '.';
+	 char Replacment = ' ';
+	 int flag = 0; wchar_t temp; 
+	 while (temp = fgetc(FileIN) != EOF) {
+		 if ((temp == pointer) && (!flag)) 
+		 {
+			 flag = 1; fputc(Replacment, FileOUT);
+		 }
+		 if (flag) {
+			 while ((temp = fgetc(FileIN) != EOF)&& (temp == pointer)){}
+		 }
+		 if (temp == EOF) return;
+		 printf("\n%c", temp);
+		 flag = 0;
+		 fputc(temp, FileOUT);
+	 }
+	 fclose(FileIN);
+	 fclose(FileOUT);
+ }

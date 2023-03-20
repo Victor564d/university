@@ -1,0 +1,17 @@
+// C++ code
+//
+// для подключения потенциометра
+int val = 0;
+int n =2;
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(3, OUTPUT);
+}
+
+void loop()
+{
+  val = analogRead(A0);
+  int output = map(val, 0, 1023, 1, 5000);
+  tone(3, output, 200);	
+}

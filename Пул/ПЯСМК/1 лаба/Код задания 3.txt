@@ -1,0 +1,50 @@
+// C++ code
+//
+// для подключения потенциометра
+int RED_PIN = 11;
+int BLUE_PIN = 10;
+int GREEN_PIN = 9;
+int val = 0;
+int n =2;
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(13, OUTPUT);
+}
+
+void loop()
+{
+ 
+showSpectrum();
+}
+
+void showRGB(int color){
+ int redIntensity;
+ int greenIntensity;
+ int blueIntensity;
+ if (color <= 255) // зона 1
+ { redIntensity = 255 - color;
+ greenIntensity = color;
+ blueIntensity = 0;
+ }
+ else if (color <= 511) // зона 2
+ { redIntensity = 0;
+ greenIntensity = 255 - (color - 256);
+ blueIntensity = (color - 256);
+ }
+ else if (color >= 512) // зона 3
+ { redIntensity = (color - 512);
+ greenIntensity = 0;
+ blueIntensity = 255 - (color - 512);
+ }
+ analogWrite(RED_PIN, redIntensity);
+ analogWrite(BLUE_PIN, blueIntensity);
+ analogWrite(GREEN_PIN, greenIntensity);
+}
+void showSpectrum()
+{
+  for  (int i=0;i<768;i++){
+   showRGB(i);
+    delay(2);
+  }
+}

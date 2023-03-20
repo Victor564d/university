@@ -1,0 +1,24 @@
+const int SER =2;
+const int LATCH =3;
+const int CLK =4;
+int number =10;
+int seg[10] = { 252, 96, 218, 242, 102, 182, 190,
+224, 254, 246 };
+void setup() {
+ pinMode(SER, OUTPUT);
+ pinMode(LATCH, OUTPUT);
+ pinMode(CLK, OUTPUT);
+ digitalWrite(LATCH, HIGH);
+}
+void loop() {
+ number--;
+ if(number<0)
+ number=9;
+showNum(number);
+ delay(1000);
+}
+void showNum (int number){
+ digitalWrite(LATCH, LOW); // LATCH – низкий
+ shiftOut(SER, CLK, LSBFIRST, seg[number]);
+ digitalWrite(LATCH, HIGH);
+}

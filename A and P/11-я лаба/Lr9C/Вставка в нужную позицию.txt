@@ -1,0 +1,27 @@
+Person * addNewElemetnSort(Person* st) 
+{
+    Person* temp;
+    STudent d; d.id = NULL; d = GetInfoFromCeyboard(d);
+    temp = (Person*)calloc(sizeof(Person), 1); temp->info = d;
+    if (!(st)) { //если список пуст
+        addToList(&st, &d); return st;//добавляем в начало и не морочим голову  если список пуст
+    }
+    else
+        { //иначе 
+           while (st->prev) st = st->prev; //идем в начало списка 
+           while (1) 
+           {
+               if (st->info.id >= d.id)  //остановились на элементе который больше 
+               {
+                   temp->next = st; //темпу записываем адрес этого элемента
+                   temp->prev = st->prev; //предыдущий темпу - предыдущий текущего положения 
+                   if (st->prev) st->prev->next = temp; else temp->next->prev = temp; //предыдущему элементу записываем следующий как темп 
+                   st = temp;
+                   while (st->prev) st = st->prev; //Возврат в начало
+                   return st;
+               }
+               else if ((st->next)) st = st->next; else { addToList(&st, &d);  while (st->prev) st = st->prev; return st; //возврат в начало /добавляем в начало и не морочим голову 
+               }
+           }
+         }
+}

@@ -1,0 +1,43 @@
+const int SER =2;
+const int LATCH =3;
+const int CLK =4;
+
+int number =0;
+bool enable = false;
+int seg[10] = { 252, 96, 218, 242, 102, 182, 190, 224,
+254, 246 };
+int katodPins[2] = {5, 6};
+int digits[2] = {1, 2};
+void setup() {
+ pinMode(SER, OUTPUT);
+ pinMode(LATCH, OUTPUT);
+ pinMode(CLK, OUTPUT);
+ pinMode(2, OUTPUT);
+ pinMode(3, OUTPUT);
+ pinMode(11, INPUT_PULLUP);
+ digitalWrite(LATCH, HIGH);
+    Serial.begin(9600);
+}
+void loop() {
+ int button1State = digitalRead(11);
+ if ((button1State == LOW) && (!enable) ) enable = true; else 
+  if ((button1State == LOW) && (enable)) enable = false; 
+    Serial.println(button1State);
+   if (enable){
+    number=millis()/1000;
+    if(number==60)
+   number=0;
+   showNum(number%10,0); //единицы
+   showNum(number/10,1); //десятки
+      Serial.println(number);
+ }
+}
+void showNum (int number, int digit){
+ for(int i=0; i < 2; i++)
+ digitalWrite(katodPins[i],
+ bitRead(digits[digit],i) == 1 ? HIGH: LOW);
+ delay(1000);
+ digitalWrite(LATCH, LOW);
+ shiftOut(SER, CLK, LSBFIRST, seg[number]);
+ digitalWrite(LATCH, HIGH);
+ }
